@@ -8,13 +8,15 @@
   <v-card class="profile-card" elevation="0" style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
     <v-card-text class="text-center py-4">
       <v-avatar size="200">
-        <img src="/Images/ben.jpg" alt="User Avatar" height="250">
+        <img src="/Images/male-avatar-icon.png" alt="User Avatar" height="250">
       </v-avatar>
-
+      <v-card-text style="font-weight: 800;">
+        {{ $page.props.auth.user.name }}
+      </v-card-text>
       <v-divider></v-divider>
       <div class="mt-3">
         <v-divider></v-divider>
-        <v-list class="mt-10">
+        <v-list class="mt-10" nav>
           <v-list-item v-for="(item, i) in links" :key="i">
             <NavLink :href="item.routeName" class="v-list-item" style="color: black;">
               <template v-slot:default="{ href, isActive, isExactActive, isLink }">
@@ -159,12 +161,11 @@ const selectNotification = (notification) => {
 };
 
 
-
 const links = [
-    { text: 'My Profile', routeName: 'dashboard', icon: 'mdi-account' },
-    { text: 'My Contribution', routeName: 'contribution', icon: 'mdi-cash' },
+    { text: 'My Dashboard', routeName: 'dashboard', icon: 'mdi-account' },
+    { text: 'New Application', routeName: 'new_application', icon: 'mdi-file' },
     { text: 'Notifications', routeName: 'notifications', icon: 'mdi-bell' },
-    { text: 'My Settings', routeName: 'settings', icon: 'mdi-cog' }
+    { text: 'My Settings', routeName: 'settings', icon: 'mdi-cog' },
   ];
 
 const search = ref('');

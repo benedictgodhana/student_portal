@@ -4,76 +4,9 @@
         <v-container width="100%" style="max-width: 1600px">
             <v-row>
                 <!-- Profile Card Section -->
-                <v-col cols="8" md="3" style="margin-top: -10px">
-                    <v-card
-                        class="profile-card"
-                        elevation="0"
-                        style="
-                            border: 1px solid #e0e0e0;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                        "
-                    >
-                        <v-card-text class="text-center py-4">
-                            <v-avatar size="200">
-                                <img
-                                    src="/Images/ben.jpg"
-                                    alt="User Avatar"
-                                    height="250"
-                                />
-                            </v-avatar>
-                            <v-card-text style="font-weight: 800;font-size: 19px;">
-        {{ $page.props.auth.user.name }}
-      </v-card-text>
-                            <v-divider></v-divider>
-                            <div class="mt-3">
-                                <v-divider></v-divider>
-                                <v-list class="mt-10">
-                                    <v-list-item
-                                        v-for="(item, i) in links"
-                                        :key="i"
-                                    >
-                                        <NavLink
-                                            :href="item.routeName"
-                                            class="v-list-item"
-                                            style="color: black"
-                                        >
-                                            <template
-                                                v-slot:default="{
-                                                    href,
-                                                    isActive,
-                                                    isExactActive,
-                                                    isLink,
-                                                }"
-                                            >
-                                                <v-list-item-icon
-                                                    v-if="item.icon"
-                                                    class="list-item-icon"
-                                                >
-                                                    <v-icon
-                                                        :icon="item.icon"
-                                                        style="color: green"
-                                                    ></v-icon>
-                                                </v-list-item-icon>
-                                                <v-list-item-content>
-                                                    <v-list-item-title
-                                                        :class="{
-                                                            'primary--text':
-                                                                isExactActive,
-                                                        }"
-                                                        v-text="item.text"
-                                                    ></v-list-item-title>
-                                                </v-list-item-content>
-                                            </template>
-                                        </NavLink>
-                                    </v-list-item>
-                                </v-list>
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
 
                 <!-- Notification List Section -->
-                <v-col cols="12" md="3" class="notification-list">
+                <v-col cols="12" md="4" class="notification-list">
                     <v-card rounded style="margin-top: -10px">
                         <v-card-title
                             style="background-color: green; color: white"
@@ -122,26 +55,27 @@
                                 >
                                     <v-list-item-action> </v-list-item-action>
                                     <v-list-item-content>
-                                        <v-row
-                                            >
-
-                                            <v-col
-
-
-                                            >
-                                                <v-list-item-title>{{
-                                                    notification.feedback
-                                                        .subject
-                                                }}</v-list-item-title>
-                                                <v-list-item-subtitle>{{
-                                                    notification.feedback
-                                                        .feedback
-                                                }}</v-list-item-subtitle>
-                                                <v-list-item-subtitle>{{
-                                                    formatDateTime(
-                                                        notification.created_at
-                                                    )
-                                                }}</v-list-item-subtitle>
+                                        <v-row>
+                                            <v-col>
+                                                <v-list-item-title>
+                                                    {{
+                                                        notification.feedback
+                                                            .subject
+                                                    }}
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{
+                                                        notification.feedback
+                                                            .feedback
+                                                    }}
+                                                </v-list-item-subtitle>
+                                                <v-list-item-subtitle>
+                                                    {{
+                                                        formatDateTime(
+                                                            notification.created_at
+                                                        )
+                                                    }}
+                                                </v-list-item-subtitle>
                                             </v-col>
                                         </v-row>
                                     </v-list-item-content>
@@ -162,7 +96,7 @@
                 </v-col>
 
                 <!-- Notification Details Section -->
-                <v-col cols="1" md="6" style="margin-top: -10px">
+                <v-col cols="12" md="4" style="margin-top: -10px">
                     <v-card v-if="selectedNotification">
                         <v-card-title
                             style="background-color: green; color: white"
@@ -178,14 +112,14 @@
                         </v-card-title>
                         <v-card-text>
                             <br />
-
-
                             <p>
-                <strong>Date and Time:</strong>
-                {{
-                    formatDateTime(selectedNotification.created_at)
-                }}
-            </p>
+                                <strong>Date and Time:</strong>
+                                {{
+                                    formatDateTime(
+                                        selectedNotification.created_at
+                                    )
+                                }}
+                            </p>
                             <br />
                             <hr />
                             <p class="mt-3">
@@ -221,7 +155,7 @@
                                     </v-col>
 
                                     <v-col>
-                                            <p class="mt-3 ">
+                                        <p class="mt-3 ">
                                             <strong class="mr-4">Email:</strong>
                                             {{
                                                 selectedNotification.feedback
@@ -229,54 +163,57 @@
                                             }}
                                         </p>
                                     </v-col>
-
-
                                 </v-row>
                                 <v-row>
+                                    <v-col>
+                                        <p class="mt-3">
+                                            <strong>Category:</strong>
+                                            {{
+                                                selectedNotification.feedback
+                                                    .category.name || 'N/A'
+                                            }}
+                                        </p>
+                                    </v-col>
 
+                                    <v-col>
+                                        <p class="mt-3">
+                                            <strong>Subcategory:</strong>
+                                            {{
+                                                selectedNotification.feedback
+                                                    .subcategory.name || 'N/A'
+                                            }}
+                                        </p>
+                                    </v-col>
 
-
-                              <v-col>
-                                                            <p class="mt-3">
-                        <strong>Category:</strong>
-                        {{ selectedNotification.feedback.category.name || 'N/A' }}
-                        </p>
-                                                        </v-col>
-
-
-                                                        <v-col>
-
-                    <p class="mt-3">
-                    <strong>Subcategory:</strong>
-                    {{ selectedNotification.feedback.subcategory.name || 'N/A' }}
-                    </p>
-                    </v-col>
-
-
-                    <v-col>
-
-                    <p class="mt-3">
-                    <strong>Subcategory:</strong>
-                    {{ selectedNotification.feedback.feedback || 'N/A' }}
-                    </p>
-                    </v-col>
-                                                    </v-row>
-
-                                                    <br />
-                                                    <br>
-
-                                                    <v-select
-      v-model="selectedNotification.feedback.status"
-      :items="statusOptions"
-      label="Feedback Status"
-      variant="underlined"
-      dense
-    ></v-select>
-                                                    <v-btn width="100%" color=orange style="text-transform:capitalize">Change Status</v-btn>
-                                                </div>
-                                            </v-card-text>
-                                        </v-card>
-                                        <v-card v-else>
+                                    <v-col>
+                                        <p class="mt-3">
+                                            <strong>Feedback:</strong>
+                                            {{
+                                                selectedNotification.feedback
+                                                    .feedback || 'N/A'
+                                            }}
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                                <br />
+                                <v-select
+                                    v-model="selectedNotification.feedback.status"
+                                    :items="statusOptions"
+                                    label="Feedback Status"
+                                    variant="underlined"
+                                    dense
+                                ></v-select>
+                                <v-btn
+                                    width="100%"
+                                    color="orange"
+                                    style="text-transform: capitalize"
+                                >
+                                    Change Status
+                                </v-btn>
+                            </div>
+                        </v-card-text>
+                    </v-card>
+                    <v-card v-else>
                         <v-card-title
                             style="
                                 background-color: green;
@@ -294,123 +231,216 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
+
+                <!-- User List Section -->
+                <v-col cols="12" md="4" class="user-list">
+                    <v-card rounded style="margin-top: -10px">
+                        <v-card-title
+                            style="background-color: green; color: white"
+                            class="text-center"
+                        >
+                            Users
+                        </v-card-title>
+                        <v-card-text>
+                            <!-- User List -->
+                            <v-list>
+                                <v-list-item
+                                    v-for="(user, index) in users"
+                                    :key="index"
+                                    @click="selectUser(user)"
+                                    :class="{
+                                        'active-item': selectedUser === user,
+                                    }"
+                                >
+                                    <v-list-item-content>
+                                        <v-row>
+                                            <v-col>
+                                                <v-list-item-title>
+                                                    {{ user.name }}
+                                                </v-list-item-title>
+                                                <v-list-item-subtitle>
+                                                    {{ user.email }}
+                                                </v-list-item-subtitle>
+                                            </v-col>
+                                        </v-row>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-card-text>
+                    </v-card>
+                    <v-card v-if="selectedUser">
+                        <v-card-title
+                            style="background-color: green; color: white"
+                        >
+                            <v-btn
+                                icon
+                                @click="selectedUser = null"
+                                style="color: black"
+                            >
+                                <v-icon color="orange">mdi-arrow-left</v-icon>
+                            </v-btn>
+                            <span class="ml-2">Chat with {{ selectedUser.name }}</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <!-- Chat Messages -->
+                            <v-list class="chat-messages">
+                                <v-list-item
+                                    v-for="(message, index) in messages"
+                                    :key="index"
+                                >
+                                    <v-list-item-content>
+                                        <v-list-item-title>
+                                            {{ message.sender }}:
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle>
+                                            {{ message.text }}
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                            <!-- Send Message -->
+                            <v-row>
+                                <v-col cols="9">
+                                    <v-text-field
+                                        v-model="newMessage"
+                                        label="Type a message"
+                                        variant="outlined"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn @click="sendMessage" color="orange">
+                                        Send
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                    </v-card>
+                    <v-card v-else>
+                        <v-card-title
+                            style="
+                                background-color: green;
+                                color: white;
+                                text-align: center;
+                            "
+                        >
+                            Select a User to Chat
+                        </v-card-title>
+                        <v-card-text class="text-center">
+                            <p>
+                                Please select a user from the list to start a
+                                chat.
+                            </p>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
             </v-row>
         </v-container>
     </AdminLayout>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
-import { Head } from "@inertiajs/vue3";
-import AdminLayout from "@/Layouts/AdminLayout.vue";
-import NavLink from "@/Components/NavLink.vue";
+import { ref, computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 
-const { notifications: initialNotifications } = usePage().props;
 
-const notifications = ref(initialNotifications);
-const selectedNotification = ref(null);
-const search = ref("");
+const search = ref('');
 const selectedFilter = ref(null);
-const filters = ["All", "Important", "Updates"];
+const filters = ref(['Recent', 'Oldest']);
+const selectedNotification = ref(null);
+const selectedUser = ref(null);
+const notifications = ref([
+    // Array of notifications
+]);
+const users = ref([
+    { name: 'User 1', email: 'user1@example.com' },
+    { name: 'User 2', email: 'user2@example.com' },
+    // Add more users as needed
+]);
+const messages = ref([]);
+const newMessage = ref('');
+
+const statusOptions = [
+    { text: 'Resolved', value: 'Resolved' },
+    { text: 'Pending', value: 'Pending' },
+    { text: 'Closed', value: 'Closed' },
+];
+
 const currentPage = ref(1);
-const itemsPerPage = 4;
-const statusOptions = ['Pending', 'In Progress', 'Resolved', 'Closed'];
-const filteredNotifications = computed(() => {
-    return notifications.value
-        .filter((notification) => {
-            const matchesFilter =
-                !selectedFilter.value ||
-                selectedFilter.value === "All" ||
-                notification.type === selectedFilter.value;
-            const matchesSearch =
-                !search.value ||
-                notification.feedback.subject
-                    .toLowerCase()
-                    .includes(search.value.toLowerCase());
-            return matchesFilter && matchesSearch;
-        })
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // Sort by newest first
-});
+const itemsPerPage = ref(5);
+const totalPages = computed(() =>
+    Math.ceil(filteredNotifications.value.length / itemsPerPage.value)
+);
+
+const filteredNotifications = computed(() =>
+    notifications.value.filter((notification) =>
+        notification.feedback.subject
+            .toLowerCase()
+            .includes(search.value.toLowerCase())
+    )
+);
 
 const paginatedNotifications = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
+    const start = (currentPage.value - 1) * itemsPerPage.value;
+    const end = start + itemsPerPage.value;
     return filteredNotifications.value.slice(start, end);
 });
 
-const totalPages = computed(() => {
-    return Math.ceil(filteredNotifications.value.length / itemsPerPage);
-});
-
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return date.toLocaleDateString("en-US", options);
+const isRecent = (notification) => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    return new Date(notification.created_at) > oneWeekAgo;
 };
 
 const selectNotification = (notification) => {
     selectedNotification.value = notification;
 };
 
-const markAsRead = (notification) => {
-    // Update notification read status
-    // Here you might want to make an API call to update the notification status in the backend
-    console.log("Marking as read:", notification);
-};
-
-const formatDateTime = (dateString) => {
-    const date = new Date(dateString);
+const formatDateTime = (dateTime) => {
     const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
     };
-    return date.toLocaleDateString("en-US", options);
+    return new Date(dateTime).toLocaleString(undefined, options);
 };
 
-
-const isRecent = (notification) => {
-    const notificationDate = new Date(notification.created_at);
-    const today = new Date();
-    return notificationDate.toDateString() === today.toDateString();
+const selectUser = (user) => {
+    selectedUser.value = user;
+    messages.value = [
+        { sender: 'Me', text: 'Hello!' },
+        { sender: selectedUser.value.name, text: 'Hi there!' },
+    ];
 };
 
-const links = [
-    { text: "My Profile", routeName: "profile", icon: "mdi-account" },
-    // { text: "My Contribution", routeName: "my_contribution", icon: "mdi-cash" },
-    { text: "Notifications", routeName: "my_notifications", icon: "mdi-bell" },
-    { text: "My Settings", routeName: "my_settings", icon: "mdi-cog" },
-];
+const sendMessage = () => {
+    if (newMessage.value.trim()) {
+        messages.value.push({ sender: 'Me', text: newMessage.value });
+        newMessage.value = '';
+    }
+};
 </script>
 
 <style scoped>
-.profile-card {
-    background-color: white;
-    padding: 16px;
-    border-radius: 8px;
-}
-
-.total-amount {
-    font-size: 24px;
-    font-weight: bold;
-    color: green;
-}
-
-.recent-activities-title {
-    margin-top: 12px;
-    font-size: 16px;
-    color: gray;
-}
-
-.form-card {
-    margin-top: 20px;
-}
-
 .bold-item {
     font-weight: bold;
+}
+.active-item {
+    background-color: lightgray;
+}
+.notification-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+.user-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+.chat-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 </style>

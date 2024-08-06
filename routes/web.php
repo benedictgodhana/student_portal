@@ -57,13 +57,18 @@
 
         Route::get('/institutions', [memberController::class, 'getFilteredInstitutions']);
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::post('/applications', [ApplicationController::class, 'submit'])->name('applications.store');
 
         // In routes/api.php
         // In web.php
-        Route::post('/submit-application', [ApplicationController::class, 'submit']);
     });
 
     Route::middleware(['auth', 'role:admin'])->group(function () {
+
+        Route::post('/applications/approve', [ApplicationController::class, 'approve']);
+
+        Route::post('/applications/update', [ApplicationController::class, 'update']);
+
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
         Route::get('/all-feedback', [FeedbackController::class, 'AllFeedback'])->name('feedback.index');

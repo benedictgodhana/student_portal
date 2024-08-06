@@ -9,70 +9,48 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationApproved;
 use App\Mail\ApplicationSubmitted as ApplicationSubmittedMail;
 
 class ApplicationController extends Controller
 {
+
     public function submit(Request $request)
-    {
-        // Validate the incoming request data
-        $request->validate([
-            'application_type_id' => 'required|exists:application_types,id',
-            'institution_id' => 'required|exists:institutions,id',
-            'location_id' => 'required|exists:locations,id',
-            'activity_id' => 'required|exists:activities,id',
-            'preferred_start_date' => 'required|date',
-            'description' => 'nullable|string',
-            'cover_letter' => 'nullable|string',
-            'status' => 'required|string',
-        ]);
+{
+    // Validate the request
+    $validated = $request->validate([
+        'applicationType' => 'required|exists:application_types,id',
+        'description' => 'required|string',
+        'preferredStartDate' => 'required|date',
+        'cover_letter' => 'required|file|mimes:pdf,doc,docx',
+        'location' => 'required|exists:locations,id',
+        'institution' => 'required|exists:institutions,id',
+        'activity' => 'required|exists:activities,id',
+    ]);
 
-        try {
-            // Create or update application record
-            $application = Application::updateOrCreate(
-                ['id' => $request->input('id', null)],
-                array_merge(
-                    $request->only([
-                        'application_type_id',
-                        'institution_id',
-                        'location_id',
-                        'activity_id',
-                        'preferred_start_date',
-                        'description',
-                        'cover_letter',
-                        'status',
-                    ]),
-                    ['user_id' => Auth::id()]
-                )
-            );
-
-            // Log the application submission
-            Log::create([
-                'user_id' => Auth::id(),
-                'action' => 'Application Submitted',
-                'details' => 'Application ID: ' . $application->id .
-                             ', Type: ' . $application->application_type_id .
-                             ', Institution: ' . $application->institution_id .
-                             ', Location: ' . $application->location_id .
-                             ', Activity: ' . $application->activity_id .
-                             ', Start Date: ' . $application->preferred_start_date,
-            ]);
-
-            // Send notification and email
-            $this->sendNotificationAndEmail(Auth::user(), $application);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Application submitted successfully!',
-                'application' => $application
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while processing the application: ' . $e->getMessage()
-            ], 500);
-        }
+    // Handle file upload
+    if ($request->hasFile('cover_letter')) {
+        $validated['cover_letter'] = $request->file('cover_letter')->store('cover_letters', 'public');
     }
+
+    // Map the validated data to match the database schema
+    $applicationData = [
+        'application_type_id' => $validated['applicationType'],
+        'description' => $validated['description'],
+        'preferred_start_date' => $validated['preferredStartDate'],
+        'cover_letter' => $validated['cover_letter'],
+        'location_id' => $validated['location'],
+        'institution_id' => $validated['institution'],
+        'activity_id' => $validated['activity'],
+        'user_id' => Auth::id(),
+    ];
+
+    // Handle the form submission: Create a new application in the database
+    $application = Application::create($applicationData);
+
+    // Redirect or return a response
+    return redirect()->back()->with('success', 'Application submitted successfully.');}
+
 
     protected function sendNotificationAndEmail($user, $application)
     {
@@ -92,4 +70,37 @@ class ApplicationController extends Controller
         // Or using Mail facade directly
         Mail::to($user->email)->send(new ApplicationSubmittedMail($application));
     }
+
+
+
+    public function update(Request $request)
+{
+    $application = Application::find($request->id);
+    if ($application) {
+        $application->status = $request->status;
+        $application->save();
+        return response()->json(['message' => 'Application status updated successfully'], 200);
+    }
+    return response()->json(['message' => 'Application not found'], 404);
+}
+
+public function approve(Request $request)
+{
+    $application = Application::with(['applicationType', 'user', 'institution', 'activity'])->find($request->id);
+
+    if ($application) {
+        $application->status = 'Approved';
+        $application->save();
+
+        // Send email notification
+        Mail::to($application->user->email)->send(new ApplicationApproved($application));
+
+        return response()->json(['message' => 'Application approved successfully'], 200);
+    }
+
+    return response()->json(['message' => 'Application not found'], 404);
+}
+
+
+
 }

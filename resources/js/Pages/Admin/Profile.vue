@@ -1,45 +1,12 @@
 <template>
     <Head title="Dashboard" />
     <AdminLayout>
-      <v-container width="100%" style="max-width: 1600px;">
+      <v-container width="100%" style="max-width: 1600px;" >
         <v-row>
-          <!-- Profile Card Section -->
-          <v-col cols="12" md="3" class="mb-4 ">
-  <v-card class="profile-card" elevation="0" style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <v-card-text class="text-center py-4">
-      <v-avatar size="200">
-        <img src="/Images/ben.jpg" alt="User Avatar" height="250">
-
-
-      </v-avatar>
-      <v-card-text style="font-weight: 800;font-size: 19px;">
-        {{ $page.props.auth.user.name }}
-      </v-card-text>
-      <v-divider></v-divider>
-      <div class="mt-3">
-        <v-divider></v-divider>
-        <v-list class="mt-10">
-          <v-list-item v-for="(item, i) in links" :key="i">
-            <NavLink :href="item.routeName" class="v-list-item" style="color: black;">
-              <template v-slot:default="{ href, isActive, isExactActive, isLink }">
-                <v-list-item-icon v-if="item.icon" class="list-item-icon">
-                  <v-icon :icon="item.icon" style="color:green"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title :class="{ 'primary--text': isExactActive }" v-text="item.text"></v-list-item-title>
-                </v-list-item-content>
-              </template>
-            </NavLink>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-card-text>
-  </v-card>
-</v-col>
 
 
           <!-- Form Section -->
-          <v-col cols="12" md="9">
+          <v-col cols="12" >
             <v-card>
     <v-tabs
       v-model="tab"
@@ -60,34 +27,50 @@
     <v-card-text>
       <v-form>
         <v-row>
+          <!-- Profile Picture Column -->
           <v-col cols="12" md="4">
-            <v-text-field
-              label="Name"
-              v-model="user.name"
-              readonly
-              variant="underlined"
-              prepend-inner-icon="mdi-account"
-            ></v-text-field>
+            <v-avatar size="200">
+              <img src="/Images/ben.jpg" alt="User Avatar" height="250">
+            </v-avatar>
           </v-col>
 
-          <v-col cols="12" md="4">
-            <v-text-field
-              label="Email"
-              type="email"
-              v-model="user.email"
-              readonly
-              variant="underlined"
-              prepend-inner-icon="mdi-email"
-            ></v-text-field>
-          </v-col>
 
+
+          <!-- Form Column -->
+          <v-col cols="12" md="8">
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="Email"
+                  type="email"
+                  v-model="user.email"
+                  readonly
+                  variant="underlined"
+                  prepend-inner-icon="mdi-email"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="Name"
+                  v-model="user.name"
+                  readonly
+                  variant="underlined"
+                  prepend-inner-icon="mdi-account"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            
+
+            <div class="flex items-center gap-4 mt-6">
+              <v-btn :loading="user.processing" type="submit" width="100%" style="background-color: orange; color:white; text-transform: capitalize;">
+                Save <v-icon size="16" left>mdi-content-save</v-icon>
+              </v-btn>
+            </div>
+          </v-col>
         </v-row>
-
-        <div class="flex items-center gap-4 mt-6">
-          <v-btn :loading="user.processing" type="submit" width="100%" style="background-color: orange; color:white; text-transform: capitalize;">
-            Save <v-icon size="16" left>mdi-content-save</v-icon>
-          </v-btn>
-        </div>
       </v-form>
     </v-card-text>
   </v-card>

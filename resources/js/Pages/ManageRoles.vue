@@ -1,90 +1,87 @@
 <template>
     <AdminLayout>
-      <v-container>
-        <!-- Main content of the page -->
+        <v-col cols="12">
         <v-card max-width="1500" elevation="0">
-          <v-card-title class="text-center" style="background-color: darkblue; color: white;border-radius: 40px;">
+          <v-card-title class="text-center" style="background-color:green; color: white;">
             Roles Management
             <v-spacer></v-spacer>
-            <!-- Import Button -->
           </v-card-title>
           <br>
-
           <v-card-text>
-            <v-chip color="red" @click="importRoles" class="mr-4" label elevation="5">
+            <v-btn color="primary" @click="importRoles" class="mr-4" label elevation="5" style="text-transform: capitalize">
               <v-icon left>mdi-upload</v-icon> Import
-            </v-chip>
-            <!-- Print Button -->
-            <v-chip @click="printRoles" class="mr-4" label elevation="5">
+            </v-btn>
+            <v-btn @click="printRoles" class="mr-4" label elevation="5" color="red" style="text-transform: capitalize">
               <v-icon left>mdi-printer</v-icon> Print
-            </v-chip>
-            <!-- Export Button -->
-            <v-chip color="green" @click="exportRoles" class="mr-4" label elevation="5">
+            </v-btn>
+            <v-btn color="green" @click="exportRoles" class="mr-4" label elevation="5" style="text-transform: capitalize">
               <v-icon left>mdi-download</v-icon> Export
-            </v-chip>
-            <!-- Add Role Button -->
-            <v-chip color="purple" @click="addRole" label elevation="5">
+            </v-btn>
+            <v-btn color="purple" @click="addRole" label elevation="5" style="text-transform: capitalize">
               <v-icon left>mdi-account-plus</v-icon> Add Role
-            </v-chip>
+            </v-btn>
           </v-card-text>
-          <v-divide></v-divide>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-table >
+              <thead >
+                <tr style="background-color: green;font-weight: 900;text-transform: uppercase;color:white">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Guard Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="role in roles" :key="role.id">
+                  <td>{{ role.id }}</td>
+                  <td>{{ role.name }}</td>
+                  <td>{{ role.guard_name }}</td>
+                  <td>
 
-          <!-- Data Table -->
-          <v-data-table
-            :headers="headers"
-            :items="roles"
-            :items-per-page="10"
-            class="elevation-0"
-          >
-            <template v-slot:item.actions="{ item }">
-              <!-- Edit Button with Dialog -->
-              <v-dialog v-model="dialog.edit" max-width="500px">
-                <template v-slot:activator="{ on }">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <v-chip icon color="white" v-bind="on">
-                        <v-icon color="green">mdi-pencil</v-icon>
-                      </v-chip>
-                    </template>
-                    <span>Edit</span>
-                  </v-tooltip>
-                </template>
-                <v-card>
-                  <v-card-title>Edit Role</v-card-title>
-                  <v-card-text>
-                    <!-- Edit form or content here -->
-                    <v-btn @click="saveEdit(item)">Save</v-btn>
-                    <v-btn @click="dialog.edit = false">Cancel</v-btn>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
+                            <v-btn icon color="white" elevation="0" class="mr-4" >
+                              <v-icon color="green">mdi-pencil</v-icon>
+                            </v-btn>
 
-              <!-- Delete Button with Dialog -->
-              <v-dialog v-model="dialog.delete" max-width="500px">
-                <template v-slot:activator="{ on }">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <v-chip icon color="white" v-bind="on">
-                        <v-icon color="red">mdi-delete</v-icon>
-                      </v-chip>
-                    </template>
-                    <span>Delete</span>
-                  </v-tooltip>
-                </template>
-                <v-card>
-                  <v-card-title>Delete Role</v-card-title>
-                  <v-card-text>
-                    <!-- Delete confirmation message -->
-                    <div>Are you sure you want to delete "{{ item.name }}"?</div>
-                    <v-btn @click="confirmDelete(item)">Confirm</v-btn>
-                    <v-btn @click="dialog.delete = false">Cancel</v-btn>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
-            </template>
-          </v-data-table>
+                            <v-btn icon color="white" elevation="0" >
+                              <v-icon color="red">mdi-delete</v-icon>
+                            </v-btn>
+
+                    <!-- Edit Button with Dialog -->
+
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+
+            <v-dialog v-model="dialog.edit" max-width="500px">
+
+                      <v-card>
+                        <v-card-title>Edit Role</v-card-title>
+                        <v-card-text>
+                          <!-- Edit form or content here -->
+                          <v-btn @click="saveEdit(role)">Save</v-btn>
+                          <v-btn @click="dialog.edit = false">Cancel</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+
+                    <!-- Delete Button with Dialog -->
+                    <v-dialog v-model="dialog.delete" max-width="500px">
+
+                      <v-card>
+                        <v-card-title>Delete Role</v-card-title>
+                        <v-card-text>
+                          <!-- Delete confirmation message -->
+                          <div>Are you sure you want to delete "{{ role.name }}"?</div>
+                          <v-btn @click="confirmDelete(role)">Confirm</v-btn>
+                          <v-btn @click="dialog.delete = false">Cancel</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+          </v-card-text>
         </v-card>
-      </v-container>
+    </v-col>
     </AdminLayout>
   </template>
 
@@ -95,13 +92,6 @@
 
   const { props } = usePage();
   const roles = ref(props.roles); // Assuming 'roles' prop is passed from backend
-
-  const headers = [
-    { title: 'ID', value: 'id' },
-    { title: 'Name', value: 'name' },
-    { title: 'Guard Name', value: 'guard_name' },
-    { title: 'Actions', value: 'actions', sortable: false },
-  ];
 
   // Dialog control
   const dialog = {
@@ -146,9 +136,18 @@
     // Implement your add role logic here
     console.log('Adding a new role');
   };
-
   </script>
 
   <style scoped>
   /* Add scoped styles here */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .table th,
+  .table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
   </style>

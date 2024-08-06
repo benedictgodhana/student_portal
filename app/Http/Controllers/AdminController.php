@@ -77,7 +77,7 @@ class AdminController extends Controller
     public function adminNotification(): Response
     {
         $notifications = Notification::with(['feedback.category', 'feedback.subcategory'])->get();
-        $feedbacks = Feedback::with(['category', 'subcategory'])->get(); // Ensure you have a Feedback model
+        $feedbacks = Application::with('user', 'applicationType', 'location', 'institution','activity')->get(); // Ensure you have a Feedback model
 
         return Inertia::render('Admin/Notifications', [
             'notifications' => $notifications,

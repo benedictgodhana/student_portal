@@ -68,7 +68,7 @@ const submit = () => {
                                 label="Email"
                                 v-model="form.email"
                                 required
-                                variant="outlined"
+                                variant="underlined"
                                 autofocus
                                 autocomplete="username"
                                 :error-messages="form.errors.email"
@@ -84,7 +84,7 @@ const submit = () => {
                                 type="password"
                                 v-model="form.password"
                                 required
-                                variant="outlined"
+                                variant="underlined"
                                 autocomplete="current-password"
                                 :error-messages="form.errors.password"
                                 prepend-inner-icon="mdi-lock"

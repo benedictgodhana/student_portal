@@ -1,56 +1,107 @@
 <template>
-    <nav class="bg-gray-800 p-6 fixed w-full top-0 left-0 z-10 elevation-1" style="background-color:white ;">
-        <div class="container mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            <v-img
-
+    <v-app-bar
+      :class="['app-bar', { 'bg-orange': !isScrolled, 'bg-green': isScrolled }]"
+      app
+      elevation="0"
+      dense
+    >
+      <v-container>
+        <v-row align="center" justify="space-between">
+          <!-- Logo -->
+          <v-img
             src="/Images/logo.png"
             contain
-                max-width="20"
-            ></v-img>
+            max-width="130"
+            class="logo"
+          ></v-img>
 
-            <div class="flex items-center">
-                <template v-if="props.canLogin">
-                    <Link v-if="props.auth.user" :href="route('dashboard')" class="btn ms-4" style="text-transform: capitalize;">
-                        Dashboard
-                    </Link>
-                    <template v-else>
-                        <v-btn v-if="props.canRegister" :href="route('register')" class="btn ms-4" variant="tonal" style="text-transform: capitalize; color:black; background-color:orangered;">
-                            <v-icon size="19">mdi-account-plus</v-icon> Register
-                        </v-btn>
-                        <v-btn :href="route('login')" class="ms-4" style="text-transform: capitalize; color:black;background-color: orange;" variant="tonal">
-                            <v-icon size="19">mdi-login</v-icon> Log in
-                        </v-btn>
-                    </template>
-                </template>
-            </div>
-        </div>
-    </nav>
-</template>
+          <v-col class="d-flex justify-end">
+            <template v-if="canLogin">
+              <v-btn
+                v-if="auth && auth.user"
+                :href="route('dashboard')"
+                class="btn ms-4"
+                style="text-transform: capitalize;"
+              >
+                Dashboard
+              </v-btn>
+              <template v-else>
+                <v-btn
+                  v-if="canRegister"
+                  :href="route('register')"
+                  class="btn ms-4"
+                  color="white"
+                  style="text-transform: capitalize; color:black;font-weight: 900; "
+                >
+                  <v-icon size="19">mdi-account-plus</v-icon> Register
+                </v-btn>
+                <v-btn
+                  :href="route('login')"
+                  class="btn ms-4"
+                  color="white"
+                  style="text-transform: capitalize;font-weight: 900;"
+                >
+                  <v-icon size="19">mdi-login</v-icon> Log in
+                </v-btn>
+              </template>
+            </template>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-app-bar>
+  </template>
 
-<script setup>
-import { Link, usePage } from '@inertiajs/vue3';
-import { VImg, VBtn, VIcon } from 'vuetify/components';
+  <script setup>
+  import { ref, onMounted, onUnmounted } from 'vue';
+  import { usePage } from '@inertiajs/vue3';
 
-const { props } = usePage();
-const { canLogin, canRegister } = props;
-</script>
+  const { props } = usePage();
+  const { canLogin, canRegister, auth } = props; // Ensure 'auth' is destructured from props
 
-<style scoped>
-.btn {
-    @apply inline-block px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest bg-gray-800 hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150;
-}
+  const isScrolled = ref(false);
 
-.hidden-sm-and-down {
-    @apply hidden sm:inline-block;
-}
+  const handleScroll = () => {
+    isScrolled.value = window.scrollY > 0;
+  };
 
-.ms-4 {
+  onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+  });
+  </script>
+
+  <style scoped>
+  .app-bar {
+    transition: background-color 0.3s ease;
+  }
+
+  .bg-transparent {
+    background-color: transparent !important;
+  }
+
+  .bg-green {
+    background-color: green !important;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .ms-4 {
     margin-left: 1rem;
-}
+  }
 
-.logo {
-    max-width: 150px; /* Adjust the size as needed */
+  .logo {
+    max-width: 150px;
     height: auto;
-}
-</style>
+  }
+  </style>

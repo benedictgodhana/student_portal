@@ -47,7 +47,7 @@
                 <!-- Highcharts for Application Overview -->
                 <v-col cols="12">
                     <v-card class="pa-3" elevation="5">
-                        <v-card-title class="text-center" style="background-color:orange; color:white">Application Overview</v-card-title>
+                        <v-card-title class="text-center" style="background-color:green; color:white">Application Overview</v-card-title>
                         <v-divider></v-divider>
                         <highcharts :options="applicationChartOptions" :key="applicationChartKey"></highcharts>
                         <v-btn-toggle v-model="selectedApplicationChartType" mandatory>

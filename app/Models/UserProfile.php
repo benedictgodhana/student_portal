@@ -14,40 +14,10 @@ class UserProfile extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'surname',
-        'otherNames',
-        'dept',
-        'employmentType',
-        'employeeNo',
-        'dateOfBirth',
-        'sex',
-        'religion',
-        'telR',
-        'telCell',
-        'currentAddress',
-        'residence',
-        'postalAddress',
-        'homeDistrict',
-        'fatherName',
-        'fatherDOB',
-        'fatherOccupation',
-        'motherName',
-        'motherDOB',
-        'motherOccupation',
-        'maritalStatus',
-        'spouseName',
-        'dateOfMarriage',
-        'spouseTel',
-        'children',
-        'siblings',
+        'user_id', 'address', 'phone_number', 'course', 'year_of_study', 'faculty', 'bio', 'gender', 'religion',
     ];
 
-    /**
-     * The user that the profile belongs to.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-}
+    }}

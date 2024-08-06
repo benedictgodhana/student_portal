@@ -23,6 +23,7 @@ class Application extends Model
         'description',
         'cover_letter',
         'status',
+        'location_id'
     ];
 
     /**

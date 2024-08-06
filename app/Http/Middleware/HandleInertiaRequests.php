@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
@@ -33,16 +32,16 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => function () use ($request) {
                     if ($user = $request->user()) {
-                        return array_merge($user->only('id', 'name', 'email'), [
+                        $profile = $user->profile;
+                        return array_merge($user->only('id', 'name', 'email', 'admission_number', 'staff_number', 'username'), [
                             'roles' => $user->getRoleNames(),
                             'permissions' => $user->getAllPermissions()->pluck('name'),
+                            'profile' => $profile ? $profile->only('address', 'phone_number', 'profile_picture', 'role', 'department', 'course', 'year_of_study', 'faculty', 'bio','gender','religion') : null,
                         ]);
                     }
                     return null;
                 },
             ],
-              ]);
+        ]);
     }
-
-
-    }
+}

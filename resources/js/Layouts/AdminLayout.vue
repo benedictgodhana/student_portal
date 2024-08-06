@@ -18,7 +18,7 @@
         <v-divider></v-divider>
 
         <!-- Navigation Links -->
-        <v-list class="mt-10">
+        <v-list class="mt-10" nav density="compact">
           <v-list-item v-for="(item, i) in items" :key="i">
             <NavLink :href="item.routeName" class="v-list-item" style="color: white;">
               <template v-slot:default="{ href, isActive, isExactActive, isLink }">
@@ -44,9 +44,20 @@
               <v-list-item v-bind="props" title="Settings" prepend-icon="mdi-cog" color="white" active-class="active-button"></v-list-item>
             </template>
 
-            <v-list-item href="/account-settings" prepend-icon="mdi-account-settings" title="Account Settings" color="white" elevation="0" active-class="active-button"></v-list-item>
-            <v-list-item href="/notifications-settings" prepend-icon="mdi-bell" title="Notifications Settings" color="white" elevation="0" active-class="active-button"></v-list-item>
+            <v-list-item :href="route('adminsettings')" prepend-icon="mdi-account-settings" title="Account Settings" color="white" elevation="0" active-class="active-button"></v-list-item>
+            <v-list-item :href="route('adminnotification')" prepend-icon="mdi-bell" title="Notifications Settings" color="white" elevation="0" active-class="active-button"></v-list-item>
+            <v-list-item :href="route('profile')" prepend-icon="mdi-account" title="My profile" color="white" elevation="0" active-class="active-button"></v-list-item>
+
           </v-list-group>
+          <v-btn
+    class="mr-4"
+    elevation="2"
+    color="red"
+    width="100%"
+    @click="$inertia.post(route('logout'))"
+    style="color: white; background-color: red;text-transform: capitalize;margin-top: 100px">
+    <v-icon left>mdi-logout</v-icon> Log Out
+</v-btn>
 
 
         </v-list>
@@ -55,23 +66,14 @@
       <!-- App Bar -->
       <v-app-bar app class="border-b" height="90" elevation="2">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title style="white-space: normal;">
-          <span class="mr-2">Welcome</span> {{ $page.props.auth.user.name }} !
-        </v-toolbar-title>
+
 
         <v-spacer></v-spacer>
 
         <!-- Search Bar -->
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          label="Search"
-          hide-details
-          class="hidden md:flex ma-4 mt-6"
-          variant="outlined"
-        ></v-text-field>
 
-        <v-chip label elevation="5" class="mr-4">
+
+        <v-chip label elevation="0" class="mr-4">
           <v-switch
             v-model="isDarkMode"
             :label="isDarkMode ? 'Dark Mode' : 'Light Mode'"
@@ -80,9 +82,7 @@
           ></v-switch>
         </v-chip>
 
-        <v-chip label elevation="5" :href="route('profile')" class="mr-4" style="background-color: green; color:white;">
-          <v-icon>mdi-account</v-icon> My Profile
-        </v-chip>
+
 
         <v-chip label elevation="5" style="background-color: orange;" class="mr-4">
           <v-icon>mdi-bell-outline</v-icon> Notifications
